@@ -1,27 +1,29 @@
-# discordrus | a [Discord](https://discordapp.com/) hook for [Logrus](https://github.com/Sirupsen/logrus) <img src="http://i.imgur.com/hTeVwmJ.png" width="40" height="40" alt=":walrus:" class="emoji" title=":walrus:"/> [![Travis CI](https://api.travis-ci.org/kz/discordrus.svg?branch=master)](https://travis-ci.org/kz/discordrus) [![GoDoc](https://godoc.org/github.com/puddingfactory/logentrus?status.svg)](https://godoc.org/github.com/kz/discordrus)
+## Discord RUS Projesini Türkçeleştirilmiş Halde sunan Linux-Tree ekibidir !
+
+# Dislog | a [Discord](https://discordapp.com/) hook for [Dislog](github.com/linux-tree/dislogs) <img src="http://i.imgur.com/hTeVwmJ.png" width="40" height="40" alt=":walrus:" class="emoji" title=":walrus:"/> [![Travis CI](https://api.travis-ci.org/kz/discordrus.svg?branch=master)](https://travis-ci.org/kz/discordrus)
 
 ![Screenshot of discordrus in action](https://i.imgur.com/wuB480O.png)
 
 ## Install
 
-`go get -u github.com/kz/discordrus`
+`go get -u github.com/linux-tree/dislog`
 
 ## Setup
 
-In order to use this package, a Discord webhook URL is required. Find out how to obtain one [here](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks). You will need to be a server administrator to do this.
+Kurulum Için Discord Webhook Gerekiyor. [Buraya Tıklayarak](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks). Nasıl kullanacağınızı öğrenin.
 
 ## Usage
 
-Below is an example of how this package may be used. The options below are used only for the purpose of demonstration and chances are that you will not need to use any options at all (or if any, only the `Username` option).
+Aşağıda bu paketin nasıl kullanılabileceğine dair bir örnek verilmiştir. Aşağıdaki seçenekler yalnızca gösteri amacıyla kullanılmaktadır ve muhtemelen herhangi bir seçeneği (veya varsa, yalnızca "Kullanıcı Adı" seçeneğini) kullanmanıza gerek kalmayacaktır.
 
 
 ```go
 package main
 
 import (
-	"github.com/sirupsen/logrus"
+	"github.com/linux-tree/dislog"
 	"os"
-	"github.com/kz/discordrus"
+	"github.com/linux-tree/dislog"
 )
 
 func init() {
@@ -36,11 +38,11 @@ func init() {
 		logrus.TraceLevel,
 		&discordrus.Opts{
 			Username:           "Test Username",
-			Author:             "",                         // Setting this to a non-empty string adds the author text to the message header
-			DisableTimestamp:   false,                      // Setting this to true will disable timestamps from appearing in the footer
-			TimestampFormat:    "Jan 2 15:04:05.00000 MST", // The timestamp takes this format; if it is unset, it will take logrus' default format
-			TimestampLocale:    nil,                        // The timestamp uses this locale; if it is unset, it will use time.Local
-			EnableCustomColors: true,                       // If set to true, the below CustomLevelColors will apply
+			Author:             "",                         // Bunu boş olmayan bir dizeye ayarlamak, yazar metnini mesaj başlığına ekler
+			DisableTimestamp:   false,                      // Bunu true olarak ayarlamak, zaman damgalarının altbilgide görünmesini devre dışı bırakır.
+			TimestampFormat:    "Jan 2 15:04:05.00000 MST", // Zaman damgası bu biçimi alır; ayarlanmamışsa, logrus'un varsayılan biçimini alacaktır
+			TimestampLocale:    nil,                        // Zaman damgası bu yerel ayarı kullanır; ayarlanmamışsa, zamanı kullanacaktır.
+			EnableCustomColors: true,                       // true olarak ayarlanırsa aşağıdaki Özel Etiket Renkleri geçerli olacaktır
 			CustomLevelColors: &discordrus.LevelColors{
 				Trace: 3092790,
 				Debug: 10170623,
@@ -50,7 +52,7 @@ func init() {
 				Panic: 13631488,
 				Fatal: 13631488,
 			},
-			DisableInlineFields: false, // If set to true, fields will not appear in columns ("inline")
+			DisableInlineFields: false, // Doğru olarak ayarlanırsa, alanlar sütunlarda görünmez ("satır içi")
 		},
 	))
 }
@@ -64,16 +66,16 @@ All discordrus.Opts fields are optional.
 
 Option | Description | Default | Valid options
 --- | --- | --- | ---
-Username | Replaces the default username of the webhook bot for the sent message only | Username unchanged | Any non-empty string (2-32 chars. inclusive)
-Author | Adds an author field to the header if set | Author not set | Any non-empty string (1-256 chars inclusive)
-DisableInlineFields | Inline means whether Discord will display the field in a column (with maximum three columns to a row). Setting this to `true` will cause Discord to display the field in its own row. | false | bool 
-DisableTimestamp | Specifies whether the timestamp in the footer should be disabled | false | bool
-TimestampFormat | Change the timestamp format | logrus's default time format | `"Jan 2 15:04:05.00000 MST"`, or any format accepted by Golang
-TimestampLocale | Change the timestamp locale | `nil` | nil == time.Local, time.UTC, time.LoadLocation("America/New_York"), etc
-EnableCustomColors | Specifies whether the `CustomLevelColors` opt value should be used instead of `discordrus.DefaultLevelColors`. If `true`, `CustomLevelColors` must be specified (or all colors will be set to the nil value of `0`, therefore displayed as white) | false | bool
-CustomLevelColors | Replaces `discordrus.DefaultLevelColors`. All fields must be entered or they will default to the nil value of `0`. | Pointer to struct instance of `discordrus.LevelColors`
+
+Kullanıcı adı | Yalnızca gönderilen mesaj için webhook botunun varsayılan kullanıcı adını değiştirir | Kullanıcı adı değişmedi | Boş olmayan herhangi bir dize (2-32 karakter dahil)
+Yazar | Ayarlanmışsa, başlığa bir yazar alanı ekler | Yazar belirlenmedi | Boş olmayan herhangi bir dize (1-256 karakter dahil)
+DisableInlineFields | Satır içi, Discord'un alanı bir sütunda gösterip göstermeyeceği anlamına gelir (bir satırda en fazla üç sütun). Bunu "true" olarak ayarlamak, Discord'un alanı kendi satırında görüntülemesine neden olur. | yanlış | bool
+DisableTimestamp | Altbilgideki zaman damgasının devre dışı bırakılıp bırakılmayacağını belirtir | yanlış | bool
+TimestampFormat | Zaman damgası biçimini değiştirin | logrus'un varsayılan zaman biçimi | "" 2 Ocak 15: 04: 05.00000 MST "'veya Golang tarafından kabul edilen herhangi bir format
+TimestampLocale | Zaman damgası yerel ayarını değiştirme | `nil` | nil == time.Local, time.UTC, time.LoadLocation ("America / New_York"), vb.
+EnableCustomColors | "Discordrus.DefaultLevelColors" yerine "CustomLevelColors" opt değerinin kullanılıp kullanılmayacağını belirtir. "True" ise, "CustomLevelColors" belirtilmelidir (veya tüm renkler "0" nil değerine ayarlanacaktır, bu nedenle beyaz olarak görüntülenir) | yanlış | bool
+CustomLevelColors | "Discordrus.DefaultLevelColors" yerine geçer. Tüm alanlar girilmelidir, aksi takdirde varsayılan olarak "0" nil değeri alınır. | Örneğini yapılandırmak için işaretçi`discordrus.LevelColors`
 	
-In addition to the above character count constraints, Discord has a maximum of 25 fields with their name and value limits being 256 and 1024 respectively. Furthermore, the description (i.e., logrus' error message) must be a maximum of 2048. All of these constraints, including the option constraints above, will automatically be truncated with no further action required.
+
+Yukarıdaki karakter sayısı kısıtlamalarına ek olarak, Discord'un adı ve değer sınırı sırasıyla 256 ve 1024 olan maksimum 25 alanı vardır. Ayrıca, açıklama (yani, logrus'un hata mesajı) maksimum 2048 olmalıdır. Yukarıdaki seçenek kısıtlamaları da dahil olmak üzere bu kısıtlamaların tümü, başka bir işlem yapılmasına gerek kalmadan otomatik olarak kesilecektir.
  
-## Acknowledgements
-The following repositories have been helpful in creating this package: [puddingfactory/logentrus](https://github.com/puddingfactory/logentrus) for Logentries, [johntdyer/slackrus](https://github.com/johntdyer/slackrus) for Slack and [nubo/hiprus](https://github.com/nubo/hiprus) for Hipchat. Check them out!
